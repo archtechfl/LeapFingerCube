@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Leap</title>
+<script src="file:///D:/IMM-SPRING/FR_PM-Mobile%20Design/Week-03-Mobile_Design/leapjs-master/leap.js"></script>
+<script src="file:///D:/IMM-SPRING/Extra_curricular/threeJS/mrdoob-three.js-r65-0-g4862f5f/mrdoob-three.js-4862f5f/build/three.js"></script>
+ 
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	
+	var renderer = new THREE.WebGLRenderer();
+	renderer.setSize( (window.innerWidth/1.3), (window.innerHeight/1.3) );
+	document.body.appendChild(renderer.domElement);
+	
+	var geometry = new THREE.CubeGeometry(2,2,2);
+	
+	var material = new THREE.MeshBasicMaterial( { color: 0xBABABA, wireframe:true } );
+	
+	var cube = new THREE.Mesh( geometry, material );
+	var cube2 = new THREE.Mesh( geometry, material );
+	var cube3 = new THREE.Mesh( geometry, material );
+	var cube4 = new THREE.Mesh( geometry, material );
+	var cube5 = new THREE.Mesh( geometry, material );
+	
+	var xSpeed = 0;
+	
+	cube.position.z = 0;
+	cube.position.y = 0;
+	cube.position.x = 0;
+	
+	scene.add( cube );
+	
+	camera.position.z = 15;
+	camera.position.y = 3;
+
+	var currentSpeed = 0.1;	
+
+    var frame;
+    
+    var controller = new Leap.Controller({ enableGestures: true });
+	
+	var fingers = {};
+	
+	var xPos = 0;
+	var yPos = 0;
+	var zPos = 0;
+	
+	var counter = 0;
+	
+	setInterval(render, (1000/48));
+
+    controller.on( 'frame' , function( data ){
+      
+      frame = data;
+	  
+	  for(var index = 0; index < frame.pointables.length; index++){
+	 
+			var pointable = frame.pointables[index];
+			//request frame
+			xPos = pointable.tipPosition[0];
+			yPos = pointable.tipPosition[1];
+			zPos = pointable.tipPosition[2];
+			
+			//console.log(xPos);
+			
+			render();
+			
+			//console.log(frame);
+			
+			//console.log("x: " + pointable.tipPosition[0]);
+			//console.log("y (up/down): " + pointable.tipPosition[1]);
+			//console.log("z: " + pointable.tipPosition[2]);
+
+		  }
+
+    });
+
+    controller.connect();
+	
+	//Animate
+
+	function render() 
+		{
+			requestAnimationFrame(render);
+			
+			//console.log(xPos,yPos,zPos);
+			
+			cube.position.x = xPos * 0.1;
+			cube.position.y = (yPos * 0.05) - 10;
+			cube.position.z = zPos * 0.05;
+			
+			//counter++;
+			//console.log(counter);
+			
+			renderer.render(scene, camera);
+			
+		}
+
+
+  </script>
+
+</body>
+
+</html>
+    
