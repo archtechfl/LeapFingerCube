@@ -74,6 +74,8 @@
 			xPos = pointable.tipPosition[0];
 			yPos = pointable.tipPosition[1];
 			zPos = pointable.tipPosition[2];
+			
+			render();
 
 		  }
 
@@ -92,8 +94,6 @@
 			cube.position.z = zPos * 0.05;
 			
 			renderer.render(scene, camera);
-			
-			render();
 			
 		}
 
